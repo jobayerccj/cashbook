@@ -43,7 +43,28 @@ class AccountsController extends Controller
         	'4'=>'Expense',
         	'5'=>'Capital'
         ];
-        return view('accounts.accounts_title_add',['accounts_type'=>$accounts_type]);
+
+        $account_sub_type=[
+            ' ' =>'Select Accounts Subtype',
+            '1'=>'Subtype 1',
+            '2'=>'Subtype 2',
+            '3'=>'Subtype 3',
+        ];
+
+        $ledger=[
+            ' ' =>'Select Ledger',
+            '1'=>'Ledger 1',
+            '2'=>'Ledger 2',
+            '3'=>'Ledger 3',
+        ];
+
+        return view('accounts.accounts_title_add', 
+            [
+            'accounts_type' => $accounts_type,
+            'account_sub_type' => $account_sub_type,
+            'ledger' => $ledger
+            ]
+            );
     }
 
     /**
@@ -56,8 +77,10 @@ class AccountsController extends Controller
     {
         //
         $accounts=new AccountsModel();
-        $accounts->accounts_title=$request['accounts_title'];
-        $accounts->accounts_type=$request['accounts_type'];
+        $accounts->accounts_title = $request['accounts_title'];
+        $accounts->accounts_type = $request['accounts_type'];
+        $accounts->account_sub_type = $request['account_sub_type'];
+        $accounts->ledger = $request['ledger'];
         $accounts->save();
         return redirect('accounts');
     }

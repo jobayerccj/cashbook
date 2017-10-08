@@ -20,6 +20,18 @@
     				{!! Form::select('accounts_type',$accounts_type,null,['class'=>'form-control']) !!}
     				<span class="alert-danger">{{ $errors->first('accounts_type') }}</span>
     			</div>
+
+                <div class="form-group">
+                    {!! Form::label('account_sub_type','Account Subtype') !!}
+                    {!! Form::select('account_sub_type',$account_sub_type,null,['class'=>'form-control']) !!}
+                    <span class="alert-danger">{{ $errors->first('account_sub_type') }}</span>
+                </div>
+
+                <div class="form-group">
+                    {!! Form::label('ledger','Ledger') !!}
+                    {!! Form::select('ledger',$ledger,null,['class'=>'form-control']) !!}
+                    <span class="alert-danger">{{ $errors->first('ledger') }}</span>
+                </div>
     			
     			<div class="form-group">
     				{!! Form::submit('Save',['class'=>'btn btn-success']) !!}

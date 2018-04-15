@@ -5,18 +5,20 @@
 		<h1>Publish a Post</h1>
 		<hr/>
 
-		<form method="POST" action="/posts">
+		@include('partials/errors')
+		
+		<form method="POST" action="/cashbook/posts">
 
 			{{ csrf_field() }}
 
 		  <div class="form-group">
 		    <label for="title">Title</label>
-		    <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Title">
+		    <input type="text" class="form-control" id="title" placeholder="Title" name="title">
 		    
 		  </div>
 		  <div class="form-group">
 		    <label for="body">Body</label>
-		    <textarea class="form-control"></textarea>
+		    <textarea class="form-control" name="body"></textarea>
 		    
 		  </div>
 		  

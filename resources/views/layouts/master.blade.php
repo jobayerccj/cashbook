@@ -38,7 +38,7 @@
 
         @yield('content')
 
-        @include('layouts/sidebar')
+        
 
       </div><!-- /.row -->
 

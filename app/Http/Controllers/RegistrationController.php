@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use App\User;
 
 class RegistrationController extends Controller
-{
+{   
+    public function __construct(){
+        $this->middleware('guest');
+    }
+
     public function create(){
     	return view('auth/register');
     }
@@ -23,7 +27,7 @@ class RegistrationController extends Controller
     	$user = User::create([
             'name' => request('name'),
             'email' => request('email'),
-            'password' => bcrypt('password')
+            'password' => bcrypt(request('password'))
             ]);
     
 

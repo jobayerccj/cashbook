@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use Auth;
 use DB;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {   
@@ -14,7 +15,17 @@ class PostController extends Controller
     }
 
     public function index(){
-        $posts = Post::latest()->get();
+        $posts = Post::latest();
+
+        if($month = request('month')){
+            $posts->whereMonth('created_at', Carbon::parse($month)->month);
+        }
+
+        if(request('year')){
+            $posts->whereYear('created_at', request('year'));
+        }
+
+        $posts = $posts->get();
 
         $archives = POST::selectRaw('year(created_at) year, monthName(created_at) month, count(*) published')
                         ->groupBy('year', 'month')

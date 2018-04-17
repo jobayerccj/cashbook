@@ -49,4 +49,6 @@
 
     </div><!-- /.blog-main -->
 
+    @include('layouts/sidebar')
+    
 @endsection('content')

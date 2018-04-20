@@ -6,7 +6,7 @@
 		
 		@include('partials/errors')
 		
-		<form method="POST" action="/cashbook/register">
+		<form method="POST" action="/register">
 
 			{{ csrf_field() }}
 

@@ -1,7 +1,7 @@
 <div class="blog-masthead">
     <div class="container">
         <nav class="nav blog-nav">
-            <a class="nav-link active" href="/cashbook">Home</a>
+            <a class="nav-link active" href="/">Home</a>
             <a class="nav-link active" href="#">New Features</a>
             <a class="nav-link active" href="#">Press</a>
             <a class="nav-link active" href="#">New Hires</a>

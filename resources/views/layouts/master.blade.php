@@ -38,13 +38,13 @@
 
         @yield('content')
 
-        
-
       </div><!-- /.row -->
+
+      <br/>
+
+      @include('layouts/footer')
 
     </main><!-- /.container -->
 
-    @include('layouts/footer')
-      
   </body>
 </html>

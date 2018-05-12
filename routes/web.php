@@ -19,8 +19,8 @@ Route::group([
 	{
 		Auth::routes();
 
-		Route::get('/', ['middleware' => ['auth'], 'uses' => 'HomeController@index']);
-		Route::get('/home', 'HomeController@index')->name('home');
+		Route::get('/', ['middleware' => ['auth'], 'uses' => 'CashflowController@index']);
+		Route::get('/home', 'CashflowController@index')->name('home');
 
 		Route::get('user-list', ['middleware' => ['auth'], 'uses' => 'AuthController@user_list']);
 		Route::get('user/edit/{id}', ['middleware' => ['auth'], 'uses' => 'AuthController@userEdit']);
@@ -29,7 +29,8 @@ Route::group([
 
 		Route::resource('languages', 'LanguageController');
 		
-		Route::get('api/sendEmail', 'ApiController@sendEmail')->middleware('cors');
+		Route::resource('cashflow', 'CashflowController');
+		
 	});
 
 	//Clear Config cache:

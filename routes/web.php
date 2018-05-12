@@ -11,30 +11,79 @@
 |
 */
 
+Route::group([
+	'prefix' => LaravelLocalization::setLocale(),
+	'middleware' => [ 'localize' ]
+	],
+	function()
+	{
+		Auth::routes();
+
+		Route::get('/', ['middleware' => ['auth'], 'uses' => 'HomeController@index']);
+		Route::get('/home', 'HomeController@index')->name('home');
+
+		Route::get('user-list', ['middleware' => ['auth'], 'uses' => 'AuthController@user_list']);
+		Route::get('user/edit/{id}', ['middleware' => ['auth'], 'uses' => 'AuthController@userEdit']);
+		Route::post('user/update', ['middleware' => ['auth'], 'uses' => 'AuthController@update']);
+		Route::get('user/{id}/delete', ['middleware' => ['auth'], 'uses' => 'AuthController@destroy']);
+
+		Route::resource('languages', 'LanguageController');
+		
+		Route::get('api/sendEmail', 'ApiController@sendEmail')->middleware('cors');
+	});
+
+	//Clear Config cache:
+	Route::get('/config-cache', function() {
+	    $exitCode = Artisan::call('config:cache');
+	    echo '<h1>Config cache cleared</h1>';
+	});
+	
+	//Clear Cache facade value:
+	Route::get('/clear-cache', function() {
+	    $exitCode = Artisan::call('cache:clear');
+	    echo '<h1>Cache facade value cleared</h1>';
+	});
+
+	//Run migration files
+	Route::get('/migrate', function() {
+	    $exitCode = Artisan::call('migrate');
+	    echo '<h1>db successfully migrated</h1>';
+	});
+
+	Route::get('/seed', function() {
+	    $exitCode = Artisan::call('db:seed');
+	    echo '<h1>seeding has completed.</h1>';
+	});
+
+	//Reoptimized class loader:
+	Route::get('/optimize', function() {
+	    $exitCode = Artisan::call('optimize');
+	    echo '<h1>Reoptimized class loader</h1>';
+	});
+
+	//Clear View cache:
+	Route::get('/view-clear', function() {
+	    $exitCode = Artisan::call('view:clear');
+	    echo '<h1>View cache cleared</h1>';
+	});
+
+	//Route cache:
+	Route::get('/route-cache', function() {
+	    $exitCode = Artisan::call('route:cache');
+	    echo '<h1>Routes cached</h1>';
+	});
+
+	//Clear Route cache:
+	Route::get('/route-clear', function() {
+	    $exitCode = Artisan::call('route:clear');
+	    echo '<h1>Route cache cleared</h1>';
+	});
 
 
-Route::get('/', 'PostController@index');
+	Route::get('/composer-dump', function() {
+	    system('composer dump-autoload -o');
+	    echo '<h1>Composer Dumped Auto load</h1>';
+	});
+	
 
-Route::get('/home', 'PostController@index');
-
-Route::post('posts/{post}/comments', 'CommentController@store');
-
-Route::get('/posts', 'PostController@index');
-
-Route::get('/posts/create', 'PostController@create');
-
-Route::post('/posts', 'PostController@store');
-
-Route::get('/posts/{post}', 'PostController@show');
-
-Route::get('/posts/tags/{tag}', 'TagsController@index');
-
-Route::get('/register', 'RegistrationController@create');
-
-Route::post('/register', 'RegistrationController@store');
-
-Route::get('/login', 'SessionsController@create');
-
-Route::post('/login', 'SessionsController@store');
-
-Route::get('/logout', 'SessionsController@destroy');
+	

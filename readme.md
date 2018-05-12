@@ -1,6 +1,6 @@
 ## About Cashbook
 
-I will try to develop a complete cashflow system with different types of features. Now it's in a very preliminary stage. Hopefully it will be in a workable stage within a month.
+I will try to develop a complete cashflow system with different types of features. Now it's in a very preliminary stage(User authentication added). Hopefully it will be in a workable stage within a month.
 
 ## Contributing
 

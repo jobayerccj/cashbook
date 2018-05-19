@@ -12,7 +12,7 @@ This is a simple cashbook application. Currently It has following features
 
 ## Installation Process
 
-You can install it as usual like other laravel project using composer. **Only difference is**  - after installation, you need to run user & language seeder. Without it these data, you can't access your dashboard. Before running seeder, please comment out LanguageServiceProvider's(app/Providers/LanguageServiceProvider) register method. Otherwise, it will throw error message. Then after completing seeding, please remove your commenting from that register method & then the system will run smoothly.
+You can install it as usual like other laravel project using composer. **Only difference is**  - after installation, you need to run user & language seeder. Without these data, you can't access your dashboard. Before running seeder, please comment out LanguageServiceProvider's(app/Providers/LanguageServiceProvider) register method. Otherwise, it will throw error message. Then after completing seeding, please remove your commenting from that register method & then the system will run smoothly.
 
 ## Contributing
 

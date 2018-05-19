@@ -83,9 +83,11 @@ class CashflowController extends Controller
      * @param  \App\Settings  $settings
      * @return \Illuminate\Http\Response
      */
-    public function show()
-    {
-        //
+    public function show($id)
+    {   
+        $data['detail'] = Cashflow::findorFail($id);
+
+        echo view('cashbook.detail', $data)->render();
     }
 
     /**
@@ -94,9 +96,11 @@ class CashflowController extends Controller
      * @param  \App\Settings  $settings
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit($id)
     {
-        //
+        $data['detail'] = Cashflow::findorFail($id);
+
+        echo view('cashbook.edit', $data)->render();
     }
 
     /**
@@ -108,7 +112,32 @@ class CashflowController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'flow_type' => 'required'
+        ]);
+
+        if($validator->fails()){
+            $data['success'] = false;
+            $data['message'] = $validator->errors();
+            echo json_encode($data);
+        }
+        else{
+
+            //$cashflow = Cashflow::findorFail($id);
+
+            //edit cashbook entry
+            Cashflow::where('id', $request['id'])
+                    ->update([
+                        'name' => $request['name'],
+                        'flow_type' => $request['flow_type'],
+                        'description' => $request['description'],
+                    ]);
+
+            $data['success'] = true;
+            $data['message'] = "Entry named <b>".$request['name']."</b> successfully updated";
+            echo json_encode($data);
+        }
     }
 
     /**

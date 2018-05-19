@@ -53,9 +53,9 @@
                                   <span class="caret"></span>
                                   </button>
                                   <ul class="dropdown-menu " aria-labelledby="dropdownMenu1">
-                                      <li><a href="{{ URL('cashflow/'.$cashflow['id'].'/edit') }}">Edit</a></li>
+                                      <li><a href="#" onclick="showEditModal({{ $cashflow['id'] }})">Edit</a></li>
                                      
-                                      <li><a href="#" >Detail</a></li>
+                                      <li><a href="#" onclick="showDetailModal({{ $cashflow['id'] }})">Detail</a></li>
                                       
                                   </ul>
                               </div>
@@ -123,6 +123,51 @@
       </div>
     </div>
 
+    <!-- Modal for cashbook edit -->
+    <div class="modal fade" id="editCashbookModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Update Cashbook</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form method="POST" id="cashbook_edit_form1">
+          <div class="modal-body" id="edit_body">
+              
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for cashbook detail -->
+    <div class="modal fade" id="detailCashbookModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Cashbook Detail</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          
+          <div class="modal-body" id="detail_body">
+              
+            
+          </div>
+          
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript">
 
        $(document).ready(function(){
@@ -133,33 +178,88 @@
        });
 
        
-          $(document).on('submit', "#cashbook_entry_form1", function(e){
-            
-            e.preventDefault();
-            
-            $.ajax({
-              type: "POST",
-              data: $(this).serialize(),
-              url: "./cashflow",
-              success: function(response){
-                var result = JSON.parse(response);
-                if(result['success']){
-                  $("#addCashbookModal").modal('hide');
-                  $("#success_message1").html('<div class="alert alert-success" role="alert">'+result['message'] +'</div>');
-                }
-                else{
-                  var error_list = "";
-                  $.each(result['message'], function(index, value){
-                    error_list += '<li class="list-group-item list-group-item-danger">' + value +'</li>';
-                  });
+      $(document).on('submit', "#cashbook_entry_form1", function(e){
+        
+        e.preventDefault();
+        
+        $.ajax({
+          type: "POST",
+          data: $(this).serialize(),
+          url: "./cashflow",
+          success: function(response){
+            var result = JSON.parse(response);
+            if(result['success']){
+              $("#addCashbookModal").modal('hide');
+              $("#success_message1").html('<div class="alert alert-success" role="alert">'+result['message'] +'</div>');
+            }
+            else{
+              var error_list = "";
+              $.each(result['message'], function(index, value){
+                error_list += '<li class="list-group-item list-group-item-danger">' + value +'</li>';
+              });
 
-                  $("#validation_errors1").html('<ul class="list-group">' + error_list +"</ul>");
-                }
 
-                console.log(result);
-              }
-            });
-          });
+              $("#validation_errors1").html('<ul class="list-group">' + error_list +"</ul>");
+            }
+
+            
+          }
+        });
+      });
+
+      $(document).on('submit', "#cashbook_edit_form1", function(e){
+        
+        e.preventDefault();
+        var id = $('input[name="id"]').val();
+
+        $.ajax({
+          type: "PUT",
+          data: $(this).serialize(),
+          url: "./cashflow/" + id ,
+          success: function(response){
+            var result = JSON.parse(response);
+            if(result['success']){
+              $("#editCashbookModal").modal('hide');
+              $("#success_message1").html('<div class="alert alert-success" role="alert">'+result['message'] +'</div>');
+            }
+            else{
+              var error_list = "";
+              $.each(result['message'], function(index, value){
+                error_list += '<li class="list-group-item list-group-item-danger">' + value +'</li>';
+              });
+
+              $("div#validation_errors1").html('<ul class="list-group">' + error_list +"</ul>");
+            }
+
+            
+          }
+        });
+      });
+
+      function showDetailModal(cashbook_id){
+        $.ajax({
+          type: "GET",
+          data: {_token: "{{ csrf_token() }}" },
+          url: "./cashflow/" + cashbook_id,
+          success: function(response){
+            $("#detail_body").html(response);
+            $("#detailCashbookModal").modal('show');
+            
+          }
+        });
+      } 
+
+      function showEditModal(cashbook_id){
+        $.ajax({
+          type: "GET",
+          data: {_token: "{{ csrf_token() }}" },
+          url: "./cashflow/" + cashbook_id + "/edit",
+          success: function(response){
+            $("#edit_body").html(response);
+            $("#editCashbookModal").modal('show');
+          }
+        });
+      } 
     </script>
   </div>
 

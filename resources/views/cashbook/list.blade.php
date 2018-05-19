@@ -44,11 +44,7 @@
                             <td>{{ $cashflow['flow_type'] == 2 ? $cashflow['amount'] : '' }}</td>
                             <td>
                               
-                              @php 
-                                $cashflow['flow_type'] == 1 ? $balance += $cashflow['amount'] : $balance -= $cashflow['amount'] 
-                              @endphp 
-
-                              {{ $balance }}
+                              {{ $cashflow['balance'] }}
                             </td>
                             <td>
                               <div class="dropdown">
@@ -59,7 +55,7 @@
                                   <ul class="dropdown-menu " aria-labelledby="dropdownMenu1">
                                       <li><a href="{{ URL('cashflow/'.$cashflow['id'].'/edit') }}">Edit</a></li>
                                      
-                                      <li><a href="#" onclick="delete_cashflow('{{ $cashflow['id'] }}')">Delete</a></li>
+                                      <li><a href="#" >Detail</a></li>
                                       
                                   </ul>
                               </div>
@@ -136,40 +132,7 @@
            });
        });
 
-       function delete_language(id){
-            swal({
-              title: "Are you sure?",
-              text: "",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#DD6B55",
-              confirmButtonText: "Yes, delete it!",
-              closeOnConfirm: false,
-              html: false
-            }, function(){
-                $.ajax({
-                  data:{id: id },
-                  url: './languages/destroy',
-                  type: "DELETE",
-                  success: function(results){
-
-                    swal({
-                      title: "Language successfully deleted!",
-                      type: "success",
-                      text: ""
-                    }, function(){
-                      location.reload();
-                    });
-
-                  },
-                  error: function(err){
-                    console.log("error occur");
-                    console.log(err);
-                  }
-                });
-            });
-          }
-
+       
           $(document).on('submit', "#cashbook_entry_form1", function(e){
             
             e.preventDefault();
@@ -200,5 +163,4 @@
     </script>
   </div>
 
-  
 @endsection

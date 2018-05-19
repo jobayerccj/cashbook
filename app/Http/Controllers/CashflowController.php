@@ -56,12 +56,19 @@ class CashflowController extends Controller
             echo json_encode($data);
         }
         else{
+
+            $current_balance = Cashflow::orderBy('id', 'DESC')->limit('1')->value('balance');
+
+            $new_balance = $request['flow_type'] == 1 ? $current_balance += $request['amount'] : $current_balance -= $request['amount'];
+
             //add new cashbook entry
             Cashflow::create([
                     'name' => $request['name'],
                     'amount' =>   $request['amount'],
                     'flow_type' => $request['flow_type'],
                     'description' => $request['description'],
+                    'balance' => $new_balance
+
             ]);
 
             $data['success'] = true;

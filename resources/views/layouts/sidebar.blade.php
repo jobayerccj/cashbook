@@ -29,7 +29,7 @@
         <li class="header">MAIN NAVIGATION</li>
         <li class="active">
           <a href="{{ url('/'.LaravelLocalization::getCurrentLocale().'/home') }}">
-            <i class="fa fa-dashboard"></i> <span>My Cashbook</span>
+            <i class="fa fa-book"></i> <span>My Cashbook</span>
           </a>
 
         </li>

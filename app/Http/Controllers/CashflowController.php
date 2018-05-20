@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Cashflow;
 use Validator;
+use PDF;
 
 class CashflowController extends Controller
 {
@@ -149,5 +150,36 @@ class CashflowController extends Controller
     public function destroy()
     {
         //
+    }
+
+    public function generate_pdf(Request $request)
+    {   
+        
+        $validator = Validator::make($request->all(), [
+            'start_from' => 'required|before_or_equal:'.$request['start_to'],
+            'start_to' => 'required|after_or_equal:'.$request['start_from']
+        ]);
+
+        if($validator->fails()){
+            $data['success'] = false;
+            $data['message'] = $validator->errors();
+            echo json_encode($data);
+        }
+        else{
+
+            $data['cashflow_list'] = Cashflow::where('created_at', '>=', date("Y-m-d", strtotime($request['start_from'])))->where('created_at', '<=', date("Y-m-d", strtotime($request['start_to'])))
+                ->orderBy('id', 'DESC')->get();
+
+            
+            $pdf = PDF::loadView('cashbook.pdf_report', $data);
+            $file_name = 'monthly_report'.time().'.pdf';
+
+            file_put_contents('./uploads/pdf/'.$file_name, $pdf->download($file_name)); 
+
+            $data['success'] = true;
+            $data['filename'] = $file_name;
+            $data['message'] = 'Pdf successfully generated';
+            echo json_encode($data);
+        }
     }
 }

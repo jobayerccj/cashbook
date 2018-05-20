@@ -34,9 +34,11 @@
   <link rel="stylesheet" href="{{ asset('public/plugins/sweetalert/sweetalert.css') }}">
 
   <!-- jQuery 2.2.3 -->
+
   <script src="{{ asset('public/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
 
   <!-- jQuery UI 1.11.4 -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

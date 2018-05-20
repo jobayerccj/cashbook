@@ -29,8 +29,10 @@ Route::group([
 
 		Route::resource('languages', 'LanguageController');
 		
-		Route::resource('cashflow', 'CashflowController');
+		Route::get('cashflow/generate_pdf', ['middleware' => ['auth'], 'uses' => 'CashflowController@generate_pdf']);
 		
+		Route::resource('cashflow', 'CashflowController');
+
 	});
 
 	//Clear Config cache:

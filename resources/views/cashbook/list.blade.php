@@ -17,7 +17,13 @@
             <div class="col-xs-12">
               <div class="box box-info">
                 <div class="box-header">
-                  <h3 class="box-title pull-right"><a href="#" data-toggle="modal" data-target="#addCashbookModal">+ Add Cashflow</a></h3>
+                  
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#addCashbookModal">+ Add Cashflow</button>
+
+                    <button class="btn btn-info" data-toggle="modal" data-target="#showPdfModal1"> <i class="fa fa-file-pdf-o"> </i> &nbsp; Generate PDF Report</button>
+
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#showExcelModal1"> <i class="fa fa-file-excel-o"> </i> &nbsp; Generate Excel Report</button>
+                  
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -86,9 +92,7 @@
           </div>
           <form method="POST" id="cashbook_entry_form1">
           <div class="modal-body">
-              <div id="validation_errors1">
-                
-              </div>
+              <div id="validation_errors1"></div>
               {{ csrf_field() }}
               <div class="form-group">
                 <label for="exampleFormControlInput1">Name</label>
@@ -116,7 +120,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary">Save</button>
           </div>
           </form>
         </div>
@@ -160,15 +164,70 @@
           
           <div class="modal-body" id="detail_body">
               
-            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal1 for cashbook pdf -->
+    <div class="modal fade" id="showPdfModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Pdf Repoprt</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           
-          </form>
+          <div class="modal-body" >
+            <div id="validation_errors1"></div>
+            <form method="POST" id="cashbook_pdf_form1">
+              <div class="form-group">
+                <div class="col-sm-3"><label>From</label>
+                  <input type="text" class="form-control datepicker" placeholder="From" name="start_from">
+                </div>
+                <div class="col-sm-3"><label>To</label>
+                  <input type="text" class="form-control datepicker" placeholder="To" name="start_to">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-6">
+                  <br/>
+                  
+                  <button type="submit" class="btn btn-info">Generate</button>
+                </div>
+              </div>
+
+                <div class="modal-footer" style="border-top: none">
+                  
+                </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal1 for cashbook excel report -->
+    <div class="modal fade" id="showExcelModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Excel Report</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          
+          <div class="modal-body" id="detail_body">
+              
+          </div>
         </div>
       </div>
     </div>
 
     <script type="text/javascript">
+      $(".datepicker").datepicker();
 
        $(document).ready(function(){
            $('#cashflow_list').dataTable({
@@ -231,6 +290,41 @@
               $("div#validation_errors1").html('<ul class="list-group">' + error_list +"</ul>");
             }
 
+            
+          }
+        });
+      });
+
+
+      $(document).on('submit', "#cashbook_pdf_form1", function(e){
+        
+        e.preventDefault();
+        
+        $.ajax({
+          type: "GET",
+          data: $(this).serialize(),
+          url: "./cashflow/generate_pdf",
+          success: function(response){
+            
+            var result = JSON.parse(response);
+            if(result['success']){
+              var x = window.open("./uploads/pdf/" + result['filename']);
+
+              if (!x){
+                alert('your window is blocked!');
+              }
+              
+              $("#showPdfModal1").modal('hide');
+              $("#success_message1").html('<div class="alert alert-success" role="alert">'+result['message'] +'</div>');
+            }
+            else{
+              var error_list = "";
+              $.each(result['message'], function(index, value){
+                error_list += '<li class="list-group-item list-group-item-danger">' + value +'</li>';
+              });
+
+              $("div#validation_errors1").html('<ul class="list-group">' + error_list +"</ul>");
+            }
             
           }
         });

@@ -30,6 +30,8 @@ Route::group([
 		Route::resource('languages', 'LanguageController');
 		
 		Route::get('cashflow/generate_pdf', ['middleware' => ['auth'], 'uses' => 'CashflowController@generate_pdf']);
+
+		Route::get('cashflow/generate_excel', ['middleware' => ['auth'], 'uses' => 'CashflowController@generate_excel']);
 		
 		Route::resource('cashflow', 'CashflowController');
 

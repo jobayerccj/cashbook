@@ -22,7 +22,8 @@
 
                     <button class="btn btn-info" data-toggle="modal" data-target="#showPdfModal1"> <i class="fa fa-file-pdf-o"> </i> &nbsp; Generate PDF Report</button>
 
-                    <button class="btn btn-warning" data-toggle="modal" data-target="#showExcelModal1"> <i class="fa fa-file-excel-o"> </i> &nbsp; Generate Excel Report</button>
+                    <a href="{{ url('cashflow/generate_excel') }}" class="btn btn-warning">Generate Excel</a>
+                    <!--<button class="btn btn-warning" data-toggle="modal" data-target="#showExcelModal1"> <i class="fa fa-file-excel-o"> </i> &nbsp; Generate Excel Report</button>-->
                   
                 </div>
                 <!-- /.box-header -->

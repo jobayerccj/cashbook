@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Cashflow;
 use Validator;
 use PDF;
+use Excel;
+use App\Exports\CashflowExport;
 
 class CashflowController extends Controller
 {
@@ -154,7 +156,6 @@ class CashflowController extends Controller
 
     public function generate_pdf(Request $request)
     {   
-        
         $validator = Validator::make($request->all(), [
             'start_from' => 'required|before_or_equal:'.$request['start_to'],
             'start_to' => 'required|after_or_equal:'.$request['start_from']
@@ -181,5 +182,10 @@ class CashflowController extends Controller
             $data['message'] = 'Pdf successfully generated';
             echo json_encode($data);
         }
+    }
+
+    public function generate_excel() 
+    {
+        return Excel::download(new CashflowExport, 'cashflow.xlsx');
     }
 }
